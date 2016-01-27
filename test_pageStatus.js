@@ -1,15 +1,25 @@
-function testSuite(test, url) {
-	casper.start(url, function() {
-		test.assertHttpStatus(200, 'Page is up and running');
-	});
+function main(url) {
 
-	casper.then(function() {
-		test.assert(casper.getCurrentUrl() === url, 'URL is the one expected');
-	});
+	casper.test.begin('Test the page status for: ' + url, 2, 
+		function(test) {
+			testSuite(test, url);
+		}
+	);
 
-	casper.run(function() {
-		test.done();
-	});
-};
+	function testSuite(test, url) {
+		casper.start(url, function() {
+			test.assertHttpStatus(200, 'Page is up and running');
+		});
 
-module.exports = testSuite;
+		casper.then(function() {
+			test.assert(casper.getCurrentUrl() === url, 'URL is the one expected');
+		});
+
+		casper.run(function() {
+			test.done();
+		});
+	};
+	
+}
+
+module.exports = main;

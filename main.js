@@ -27,10 +27,7 @@ function main(configFile) {
 	};
 
 	urls.forEach(function(url) {
-		casper.test.begin('Test the page status for: ' + url, 2, 
-		function(test) {
-			test_pageStatus(test, url);
-		});
+		test_pageStatus(url);
 	});
 }
 
