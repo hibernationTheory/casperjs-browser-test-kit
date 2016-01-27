@@ -5,12 +5,16 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "main": "casperjs-dev test run.js --xunit=log.xml"
+    "main": "casperjs test run.js --xunit=log.xml"
   },
   "keywords": [
     "PhantomJs",
     "CasperJs"
   ],
   "author": "Engin Arslan",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "casperjs": "^1.1.0-beta3",
+    "phantomjs": "^1.9.19"
+  }
 }
