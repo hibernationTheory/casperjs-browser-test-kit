@@ -1,5 +1,5 @@
 {
-  "name": "casperjs-browser-tests",
+  "name": "casperjs-browser-test-kit",
   "version": "0.0.0",
   "description": "CasperJS Browser Tests Starting Kit",
   "main": "main.js",
