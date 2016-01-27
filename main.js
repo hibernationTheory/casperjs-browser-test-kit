@@ -1,24 +1,38 @@
-function main(configFile) {
-
-	var test_pageStatus = require('./test_pageStatus.js');
+function main(dataFile, configFile) {
 
 	var fs = require('fs');
-	var runTests,
-		numTests,
-		urls = [];
+	var fs_helpers = require('./utils/fs_helpers');
+	var	urls = [];
+	var modules = [];
 
-	var configExists = fs.exists(configFile);
-	if (!configExists) {
-		casper.test.comment('Config file can\'t be located')
+	// read in the data file
+	var dataExists = fs.exists(dataFile);
+	if (!dataExists) {
+		casper.test.comment('Data file can\'t be located')
 		casper.test.done();
 	} else {
-		urlsStr = fs.read(configFile);
-		urlsData = JSON.parse(urlsStr);
-		urls = urlsData.links.map(function(item) {
+		var urlsStr = fs.read(dataFile);
+		var urlsData = JSON.parse(urlsStr);
+		var urls = urlsData.links || [];
+		urls = urls.map(function(item) {
 			return item.link;
 		});
-		numTests = urls.length;
-		runTests = true;
+	}
+
+	var configExists = fs.exists(configFile)
+	if (configExists) {
+		// if a config file is given use the tests array in there 
+		// to see which tests to run.
+		var testsStr = fs.read(configFile)
+		var testsData = JSON.parse(testsStr);
+		var tests = testsData.tests || [];
+		modules = tests.map(function(test) {
+			return './tests/' + test + '.js';
+		})
+	} else {
+		// if a config file is not given, use the contents of the ./tests folder
+		// to see which tests to run.
+		modules = fs_helpers.getFilesInFolder('./tests');
 	}
 
 	if (urls.length === 0) {
@@ -27,7 +41,9 @@ function main(configFile) {
 	};
 
 	urls.forEach(function(url) {
-		test_pageStatus(url);
+		modules.forEach(function(mod) {
+			require(mod)(url);
+		});
 	});
 }
 

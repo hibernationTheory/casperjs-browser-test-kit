@@ -1,2 +1,2 @@
 var main = require('./main.js');
-main('./config.json');
+main('./data.json', './config.json');
